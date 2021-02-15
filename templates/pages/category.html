@@ -26,6 +26,16 @@ category:
         class="category-header-image"
     }}
 {{/if}}
+<div id="customerBanner">
+  <div class="banners" data-banner-location="top">
+      <div class="banner" data-event-type="promotion">
+          <div data-event-type="promotion-click">
+            {{customer.name}}
+          </div>
+      </div>
+  </div>
+</div>
+<br />
 {{#unless theme_settings.hide_category_page_heading }}
     <h1 class="page-heading">{{category.name}}</h1>
     {{{region name="category_below_header"}}}
@@ -49,6 +59,43 @@ category:
     {{/if}}
 
     <main class="page-content" id="product-listing-container">
+        <div class="modal-button-container">
+                <a href="#addAllToCartModal" class="button addAllToCart"  data-reveal-id="addAllToCartModal">Add All To Cart</a>
+                <a href="#removeAllFromCartModal" class="button removeAllFromCart"  data-reveal-id="removeAllFromCartModal">Remove All From Cart</a>
+        </div>
+       <div id="addAllToCartModal" class="modal" data-reveal="" tabindex="0" role="dialog">
+         <div class="modal-header">
+             <h2 class="modal-header-title">Added All To Cart</h2>
+         </div>
+         <div class="modal-body">
+             <h4>Success!</h4>
+             <p>
+                 All products in this category have been added to the cart.
+             </p>
+         </div>
+         <div class="modal-footer">
+             <a class="button button--small button--primary goToCartBtn" href="#">
+                 Go To Cart
+             </a>
+         </div>
+       </div>
+       <div id="removeAllFromCartModal" class="modal" data-reveal="" tabindex="0" role="dialog">
+         <div class="modal-header">
+             <h2 class="modal-header-title">Removed All From Cart</h2>
+         </div>
+         <div class="modal-body">
+             <h4>Success!</h4>
+             <p>
+                 All products in this category have been removed from the cart.
+             </p>
+         </div>
+         <div class="modal-footer">
+             <a class="button button--small button--primary removeAllFromCartModalClose" href="#">
+                 Close
+             </a>
+         </div>
+       </div>
+        <a
         {{> components/category/product-listing}}
         {{{region name="category_below_content"}}}
     </main>

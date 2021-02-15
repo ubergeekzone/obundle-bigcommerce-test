@@ -46,6 +46,74 @@ export default class Category extends CatalogPage {
         $('a.reset-btn').on('click', () => this.setLiveRegionsAttributes($('span.reset-message'), 'status', 'polite'));
 
         this.ariaNotifyNoProducts();
+
+        $( ".card-figure" ).hover(
+          function() {
+            var image = $(this).find('.card-image');
+            image.addClass("replaced").hide();
+            var altImage =  $('<img />', {
+              src:  image.attr('data-hoverimage'),
+              class: "altImage card-image lazyautosizes lazyloaded"
+            });
+            $(this).find(".card-figure__link .card-img-container").prepend(altImage);
+          }, function() {
+            $(this).find(".card-figure__link .card-img-container .altImage").remove();
+            $(this).find(".card-figure__link .card-img-container .replaced").removeClass("replaced").show();
+          }
+        );
+
+          $.ajax({
+          "async": true,
+          "crossDomain": true,
+          "url": "http://localhost:3000/api/storefront/carts?include=lineItems.digitalItems.options%2ClineItems.physicalItems.options",
+          "method": "GET",
+          "headers": {}
+          }).done(function (response) {
+              if(response.length > 0) {
+                  $(".removeAllFromCart").show();
+                  var cartID = response[0].id;
+                  if(response[0].lineItems.physicalItems.length > 0) {
+                      $.each(response[0].lineItems.physicalItems, function(index, item) {
+                          $("body").on("click", ".removeAllFromCart", function(e) {
+                            e.preventDefault();
+                            $.ajax({
+                                "async": true,
+                                "crossDomain": true,
+                                "url": "https://api.bigcommerce.com/stores/vlgbx5fu73/v3/carts/"+cartID+"/items/112",
+                                "method": "DELETE",
+                                "headers": {
+                                  "accept": "application/json",
+                                  "content-type": "application/json",
+                                  "x-auth-token": "46vady0aij8d3vnnj87izfpifhy5xjp"
+                                },
+                                "processData": false
+                              }).done(function (response) {
+
+                              });
+                          });
+                      });
+                  }
+              } else {
+                $(".removeAllFromCart").hide();
+              }
+          });
+
+          $(".addAllToCart").click(function(e) {
+              e.preventDefault();
+              $.get("/cart.php?action=add&product_id=112", function(data) {
+                  $(".removeAllFromCart").show();
+              });
+          });
+
+          $("body").on("click", ".goToCartBtn", function(e) {
+            e.preventDefault();
+            window.location = "/cart.php"
+          });
+
+          $("body").on("click", ".removeAllFromCartModalClose", function(e) {
+            $("#removeAllFromCartModal, .modal-background").hide();
+          });
+
     }
 
     ariaNotifyNoProducts() {
