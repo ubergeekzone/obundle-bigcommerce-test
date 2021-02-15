@@ -65,7 +65,7 @@ export default class Category extends CatalogPage {
           $.ajax({
           "async": true,
           "crossDomain": true,
-          "url": "http://localhost:3000/api/storefront/carts?include=lineItems.digitalItems.options%2ClineItems.physicalItems.options",
+          "url": "https://obundle-test64.mybigcommerce.com/api/storefront/carts?include=lineItems.digitalItems.options%2ClineItems.physicalItems.options",
           "method": "GET",
           "headers": {}
           }).done(function (response) {
